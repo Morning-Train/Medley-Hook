@@ -22,7 +22,7 @@ abstract class AbstractHook
     public function __construct(string $hook, int $priority = 10)
     {
         $this->hook = $hook;
-        $this->priority = 10;
+        $this->priority = $priority;
     }
 
     /**
