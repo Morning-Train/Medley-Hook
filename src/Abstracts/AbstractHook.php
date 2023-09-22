@@ -1,8 +1,8 @@
 <?php
 
-namespace Morningtrain\WP\Hooks\Abstracts;
+namespace MorningMedley\Hooks\Abstracts;
 
-use Morningtrain\WP\Hooks\Classes\CallbackManager;
+use MorningMedley\Hooks\Classes\CallbackManager;
 use PHPUnit\TextUI\ReflectionException;
 
 /**

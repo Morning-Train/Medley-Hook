@@ -1,8 +1,8 @@
 <?php
 
-namespace Morningtrain\WP\Hooks\Abstracts;
+namespace MorningMedley\Hooks\Abstracts;
 
-use Morningtrain\WP\Hooks\Traits\Hookable;
+use MorningMedley\Hooks\Traits\Hookable;
 
 abstract class AbstractHooks
 {

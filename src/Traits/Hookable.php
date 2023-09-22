@@ -1,8 +1,8 @@
 <?php
 
-    namespace Morningtrain\WP\Hooks\Traits;
+    namespace MorningMedley\Hooks\Traits;
 
-    use Morningtrain\WP\Hooks\Abstracts\AbstractHook;
+    use MorningMedley\Hooks\Abstracts\AbstractHook;
 
     trait Hookable
     {

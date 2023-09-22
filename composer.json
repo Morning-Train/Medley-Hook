@@ -1,5 +1,5 @@
 {
-    "name": "morningtrain/wp-hooks",
+    "name": "morningmedley/hooks",
     "description": "A system for organizing WordPress hooks",
     "keywords": [
         "wordpress",
@@ -16,13 +16,20 @@
     ],
     "autoload": {
         "psr-4": {
-            "Morningtrain\\WP\\Hooks\\": "src/"
+            "MorningMedley\\Hooks\\": "src/"
         }
     },
     "require": {
         "php": "^8.0",
         "illuminate/container": "^8|^9",
         "illuminate/support": "^8|^9",
-        "symfony/finder": "^v6.3.4"
+        "symfony/finder": "^v6.3"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MorningMedley\\Hooks\\ServiceProvider"
+            ]
+        }
     }
 }

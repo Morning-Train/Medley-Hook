@@ -1,6 +1,6 @@
 <?php
 
-namespace Morningtrain\WP\Hooks;
+namespace MorningMedley\Hooks;
 
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Symfony\Component\Finder\Finder;

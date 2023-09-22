@@ -1,6 +1,6 @@
 <?php
 
-namespace Morningtrain\WP\Hooks\Classes;
+namespace MorningMedley\Hooks\Classes;
 
 use Attribute;
 
@@ -10,7 +10,7 @@ use Attribute;
  * @see https://developer.wordpress.org/reference/functions/add_filter/
  */
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_METHOD)]
-class Filter extends \Morningtrain\WP\Hooks\Abstracts\AbstractHook
+class Filter extends \MorningMedley\Hooks\Abstracts\AbstractHook
 {
 
     public function register(callable $callback, int $numArgs)
