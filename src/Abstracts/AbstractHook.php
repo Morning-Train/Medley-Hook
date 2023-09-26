@@ -30,5 +30,5 @@ abstract class AbstractHook
      *
      * @return mixed
      */
-    abstract public function register(callable $callback, int $numArgs);
+    abstract public function register(callable $callback, int $numArgs = 1);
 }

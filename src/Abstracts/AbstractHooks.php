@@ -11,5 +11,6 @@ abstract class AbstractHooks
     public function __construct()
     {
         $this->hookMethods();
+        $this->hookProperties();
     }
 }
