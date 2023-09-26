@@ -19,7 +19,12 @@ class ServiceProvider extends IlluminateServiceProvider
             $finder = new Finder();
             $finder->in($this->app->basePath($path))->name('*.php')->files();
             foreach ($finder as $file) {
-                $class_name = rtrim($namespace, '\\') . '\\' . $file->getFilenameWithoutExtension();
+                $class_name = implode('\\', array_filter([
+                    rtrim($namespace, '\\'),
+                    str_replace("/", "\\", $file->getRelativePath()),
+                    $file->getFilenameWithoutExtension(),
+                ]));
+
                 if (class_exists($class_name)) {
                     try {
                         new $class_name();
