@@ -91,6 +91,10 @@ class RemoveCommentsHooks extends AbstractHooks
     {
         \remove_menu_page('edit-comments.php');
     }
+    
+    // Or on a property - This is equivalent to add_filter('disable_some_feature','__return_false')
+    #[Filter('disable_some_feature')]
+    public bool $false = false;
 }
 
 ```

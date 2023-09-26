@@ -3,15 +3,19 @@
 namespace MorningMedley\Hooks\Traits;
 
 use MorningMedley\Hooks\Abstracts\AbstractHook;
+use Reflector;
 
 trait Hookable
 {
-    public function hookMethods()
+    /**
+     * Setup hooks for a class
+     *
+     * @return void
+     */
+    public function hookClass()
     {
-        $r = new \ReflectionClass($this);
-        $methods = $r->getMethods();
-        foreach ($methods as $method) {
-            $attributes = $method->getAttributes();
+        foreach ($this->getHookableTargets() as $hookableReflection) {
+            $attributes = $hookableReflection->getAttributes();
             if (empty($attributes)) {
                 continue;
             }
@@ -20,27 +24,39 @@ trait Hookable
             $hooks = array_filter($instances, fn($i) => is_a($i, AbstractHook::class));
 
             foreach ($hooks as $hook) {
-                $hook->register([$this, $method->getName()], $method->getNumberOfParameters());
+                $this->registerHook($hook, $hookableReflection);
             }
         }
     }
 
-    public function hookProperties()
+    /**
+     * @return Reflector[]
+     */
+    protected function getHookableTargets(): array
     {
-        $r = new \ReflectionClass($this);
-        $properties = $r->getProperties();
-        foreach ($properties as $property) {
-            $attributes = $property->getAttributes();
-            if (empty($attributes)) {
-                continue;
-            }
+        $reflection = new \ReflectionClass($this);
 
-            $instances = array_map(fn($a) => $a->newInstance(), $attributes);
-            $hooks = array_filter($instances, fn($i) => is_a($i, AbstractHook::class));
+        return [...$reflection->getMethods(), ...$reflection->getProperties()];
+    }
 
-            foreach ($hooks as $hook) {
-                $hook->register(fn() => $property->getValue($this));
-            }
+    /**
+     * Register a Hook by its reflector
+     *
+     * @param  AbstractHook  $hook
+     * @param  Reflector  $reflection
+     *
+     * @return void
+     */
+    protected function registerHook(AbstractHook $hook, Reflector $reflection)
+    {
+        switch (true) {
+            case is_a($reflection, \ReflectionMethod::class):
+                $hook->register([$this, $reflection->getName()],
+                    $reflection->getNumberOfParameters());
+                break;
+            case is_a($reflection, \ReflectionProperty::class):
+                $hook->register(fn() => $reflection->getValue($this));
+                break;
         }
     }
 }
