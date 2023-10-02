@@ -14,7 +14,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     public function boot(): void
     {
-        $paths = $this->app->get('config')->get('hook.path');
+        $paths = $this->app->get('config')->get('hook.paths');
         foreach ($paths as $namespace => $path) {
             $finder = new Finder();
             $finder->in($this->app->basePath($path))->name('*.php')->files();
