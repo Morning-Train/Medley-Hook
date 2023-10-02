@@ -1,10 +1,10 @@
 {
-    "name": "morningmedley/hooks",
+    "name": "morningmedley/hook",
     "description": "A system for organizing WordPress hooks",
     "keywords": [
         "wordpress",
         "morningtrain",
-        "hooks"
+        "hook"
     ],
     "minimum-stability": "stable",
     "license": "MIT",
