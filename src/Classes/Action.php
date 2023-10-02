@@ -1,6 +1,6 @@
 <?php
 
-namespace MorningMedley\Hooks\Classes;
+namespace MorningMedley\Hook\Classes;
 
 use Attribute;
 
@@ -10,7 +10,7 @@ use Attribute;
  * @see https://developer.wordpress.org/reference/functions/add_action/
  */
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class Action extends \MorningMedley\Hooks\Abstracts\AbstractHook
+class Action extends \MorningMedley\Hook\Abstracts\AbstractHook
 {
 
     public function register(callable $callback, int $numArgs = 1)

@@ -1,8 +1,8 @@
 <?php
 
-namespace MorningMedley\Hooks\Abstracts;
+namespace MorningMedley\Hook\Abstracts;
 
-use MorningMedley\Hooks\Traits\Hookable;
+use MorningMedley\Hook\Traits\Hookable;
 
 abstract class AbstractHooks
 {

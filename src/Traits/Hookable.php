@@ -1,8 +1,8 @@
 <?php
 
-namespace MorningMedley\Hooks\Traits;
+namespace MorningMedley\Hook\Traits;
 
-use MorningMedley\Hooks\Abstracts\AbstractHook;
+use MorningMedley\Hook\Abstracts\AbstractHook;
 use Reflector;
 
 trait Hookable

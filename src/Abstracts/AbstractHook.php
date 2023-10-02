@@ -1,8 +1,8 @@
 <?php
 
-namespace MorningMedley\Hooks\Abstracts;
+namespace MorningMedley\Hook\Abstracts;
 
-use MorningMedley\Hooks\Classes\CallbackManager;
+use MorningMedley\Hook\Classes\CallbackManager;
 use PHPUnit\TextUI\ReflectionException;
 
 /**

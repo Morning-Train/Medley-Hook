@@ -16,7 +16,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "MorningMedley\\Hooks\\": "src/"
+            "MorningMedley\\Hook\\": "src/"
         }
     },
     "require": {
@@ -28,7 +28,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "MorningMedley\\Hooks\\ServiceProvider"
+                "MorningMedley\\Hook\\ServiceProvider"
             ]
         }
     }
