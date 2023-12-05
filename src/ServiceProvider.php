@@ -3,10 +3,15 @@
 namespace MorningMedley\Hook;
 
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use MorningMedley\Hook\Classes\HookLoader;
+use MorningMedley\Hook\Classes\HookLocator;
 use Symfony\Component\Finder\Finder;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
+    private string $cacheKey = 'hooks';
+
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . "/config/config.php", 'hook');
@@ -14,25 +19,37 @@ class ServiceProvider extends IlluminateServiceProvider
 
     public function boot(): void
     {
-        $paths = $this->app->get('config')->get('hook.paths');
-        foreach ($paths as $namespace => $path) {
-            $finder = new Finder();
-            $finder->in($this->app->basePath($path))->name('*.php')->files();
-            foreach ($finder as $file) {
-                $class_name = implode('\\', array_filter([
-                    rtrim($namespace, '\\'),
-                    str_replace("/", "\\", $file->getRelativePath()),
-                    $file->getFilenameWithoutExtension(),
-                ]));
+        $cache = $this->app->make('file.cache');
+        if (\wp_get_environment_type() !== 'production') {
+            $classes = $cache->get($this->cacheKey, function (ItemInterface $item) {
+                $item->expiresAfter(DAY_IN_SECONDS * 30);
 
-                if (class_exists($class_name)) {
-                    try {
-                        new $class_name();
-                    } catch (\Throwable $e) {
-                        continue;
-                    }
+                return $this->findClasses();
+            });
+        } else {
+            $classes = $this->findClasses();
+        }
+
+        foreach ($classes as $class) {
+            if (class_exists($class)) {
+                try {
+                    new $class();
+                } catch (\Throwable $e) {
+
                 }
             }
         }
+    }
+
+    private function findClasses(): array
+    {
+        $paths = $this->app->get('config')->get('hook.paths');
+        $classes = [];
+        foreach ($paths as $namespace => $path) {
+            $locator = $this->app->make(HookLocator::class);
+            $classes = [...$classes, ...$locator->locate($path, $namespace, $this->app->make(Finder::class))];
+        }
+
+        return $classes;
     }
 }

@@ -25,6 +25,29 @@
         "illuminate/support": "^8|^9",
         "symfony/finder": "^v6.3"
     },
+    "require-dev": {
+        "brain/monkey": "^2.6",
+        "dingo-d/wp-pest": "^1.6.1"
+    },
+    "scripts": {
+        "setup-test": [
+            "vendor/bin/wp-pest setup theme"
+        ],
+        "test": "vendor/bin/pest --group=unit",
+        "test-integration": [
+            "cp -r tests/_files/blocks wp/src/wp-content",
+            "vendor/bin/pest --group=integration"
+        ],
+        "test-coverage": "vendor/bin/pest  --group=unit --coverage"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "pestphp/pest-plugin": true,
+            "koodimonni/composer-dropin-installer": true,
+            "mnsami/composer-custom-directory-installer": true
+        }
+    },
     "extra": {
         "laravel": {
             "providers": [
