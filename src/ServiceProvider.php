@@ -19,11 +19,9 @@ class ServiceProvider extends IlluminateServiceProvider
 
     public function boot(): void
     {
-        $cache = $this->app->make('file.cache');
-        if (\wp_get_environment_type() !== 'production') {
+        $cache = $this->app->makeWith('file.cache', ['namespace' => 'hook', 'defaultLifetime' => DAY_IN_SECONDS * 30]);
+        if ($this->app->isProduction()) {
             $classes = $cache->get($this->cacheKey, function (ItemInterface $item) {
-                $item->expiresAfter(DAY_IN_SECONDS * 30);
-
                 return $this->findClasses();
             });
         } else {
