@@ -41,9 +41,10 @@ class ServiceProvider extends IlluminateServiceProvider
 
     private function findClasses(): array
     {
-        $paths = $this->app->get('config')->get('hook.paths');
+        $paths = $this->app->make('config')->get('hook.paths');
         $classes = [];
-        foreach ($paths as $namespace => $path) {
+        foreach ($paths as $hookPath) {
+            [$namespace, $path] = $hookPath;
             $locator = $this->app->make(HookLocator::class);
             $classes = [...$classes, ...$locator->locate($path, $namespace, $this->app->make(Finder::class))];
         }
