@@ -19,7 +19,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     public function boot(): void
     {
-        $cache = $this->app->makeWith('file.cache', ['namespace' => 'hook', 'defaultLifetime' => DAY_IN_SECONDS * 30]);
+        $cache = $this->app->make('filecachemanager')->getCache('hook');
         if ($this->app->isProduction()) {
             $classes = $cache->get($this->cacheKey, function (ItemInterface $item) {
                 return $this->findClasses();
