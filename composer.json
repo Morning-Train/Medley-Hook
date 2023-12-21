@@ -21,8 +21,8 @@
     },
     "require": {
         "php": "^8.0",
-        "illuminate/container": "^8|^9",
-        "illuminate/support": "^8|^9",
+        "illuminate/container": "^9|^10",
+        "illuminate/support": "^9|^10",
         "symfony/finder": "^v6.3"
     },
     "require-dev": {
