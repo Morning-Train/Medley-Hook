@@ -19,8 +19,8 @@ class ServiceProvider extends IlluminateServiceProvider
 
     public function boot(): void
     {
-        $cache = $this->app->make('filecachemanager')->getCache('hook');
         if ($this->app->isProduction()) {
+            $cache = $this->app->make('filecachemanager')->getCache('hook');
             $classes = $cache->get($this->cacheKey, function (ItemInterface $item) {
                 return $this->findClasses();
             });
@@ -31,7 +31,7 @@ class ServiceProvider extends IlluminateServiceProvider
         foreach ($classes as $class) {
             if (class_exists($class)) {
                 try {
-                    new $class();
+                    $this->app->make($class);
                 } catch (\Throwable $e) {
 
                 }
