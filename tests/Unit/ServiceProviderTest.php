@@ -30,3 +30,7 @@ it('can merge config', function () {
     // If the mocks above didn't fail then it means the test is successful
     expect(true)->toBeTrue();
 });
+
+it('can locate hook classes', function(){
+
+});
