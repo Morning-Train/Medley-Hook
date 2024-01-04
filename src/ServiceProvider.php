@@ -29,9 +29,9 @@ class ServiceProvider extends IlluminateServiceProvider
         }
 
         foreach ($classes as $class) {
-            if (class_exists($class)) {
+            if (class_exists($class) && method_exists($class, 'hookClass')) {
                 try {
-                    $this->app->make($class);
+                    $this->app->make($class)->hookClass();
                 } catch (\Throwable $e) {
 
                 }
