@@ -4,6 +4,7 @@ namespace MorningMedley\Hook;
 
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use MorningMedley\Hook\Classes\HookLocator;
+use MorningMedley\Hook\Console\HookMakeCommand;
 use Symfony\Component\Finder\Finder;
 
 class HookServiceProvider extends IlluminateServiceProvider
@@ -29,6 +30,10 @@ class HookServiceProvider extends IlluminateServiceProvider
                 }
             }
         }
+
+        $this->commands([
+            HookMakeCommand::class
+        ]);
     }
 
     private function findClasses(): array
