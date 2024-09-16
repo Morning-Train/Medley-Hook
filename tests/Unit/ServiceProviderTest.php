@@ -30,7 +30,7 @@ it('can merge config', function () {
     $configMock->shouldReceive('get')->andReturn([]);
     $configMock->shouldReceive('set')->with('hook', require dirname(__FILE__, 3) . "/src/config/config.php");
 
-    $provider = new \MorningMedley\Hook\ServiceProvider($appMock);
+    $provider = new \MorningMedley\Hook\HookServiceProvider($appMock);
     $provider->register();
 
     // If the mocks above didn't fail then it means the test is successful
@@ -48,7 +48,7 @@ it('can cache in production', function () {
     $cacheMock->shouldReceive('getCache')->with('hook')->andReturn($cacheMock);
     $cacheMock->shouldReceive('get')->with('hooks', Closure::class)->andReturn([]);
 
-    $provider = new \MorningMedley\Hook\ServiceProvider($appMock);
+    $provider = new \MorningMedley\Hook\HookServiceProvider($appMock);
     $provider->boot();
 
     expect(true)->toBeTrue();
@@ -65,7 +65,7 @@ it('does not use cache when not production', function () {
 
     $configMock->shouldReceive('get')->with('hook.paths')->andReturn([]);
 
-    $provider = new \MorningMedley\Hook\ServiceProvider($appMock);
+    $provider = new \MorningMedley\Hook\HookServiceProvider($appMock);
     $provider->boot();
 
     expect(true)->toBeTrue();
@@ -97,7 +97,7 @@ it('can boot hooks', function () {
         ['namespace', 'path'],
     ]);
 
-    $provider = new \MorningMedley\Hook\ServiceProvider($appMock);
+    $provider = new \MorningMedley\Hook\HookServiceProvider($appMock);
     $provider->boot();
 
     $this->expectOutputString("Construct");

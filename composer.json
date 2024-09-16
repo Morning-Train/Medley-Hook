@@ -50,7 +50,7 @@
     "extra": {
         "morningmedley": {
             "providers": [
-                "MorningMedley\\Hook\\ServiceProvider"
+                "MorningMedley\\Hook\\HookServiceProvider"
             ]
         }
     }
