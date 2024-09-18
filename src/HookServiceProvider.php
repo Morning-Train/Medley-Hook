@@ -3,15 +3,12 @@
 namespace MorningMedley\Hook;
 
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use MorningMedley\Hook\Classes\HookLoader;
 use MorningMedley\Hook\Classes\HookLocator;
+use MorningMedley\Hook\Console\HookMakeCommand;
 use Symfony\Component\Finder\Finder;
-use Symfony\Contracts\Cache\ItemInterface;
 
-class ServiceProvider extends IlluminateServiceProvider
+class HookServiceProvider extends IlluminateServiceProvider
 {
-    private string $cacheKey = 'hooks';
-
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . "/config/config.php", 'hook');
@@ -19,16 +16,12 @@ class ServiceProvider extends IlluminateServiceProvider
 
     public function boot(): void
     {
-        if ($this->app->isProduction()) {
-            $cache = $this->app->make('filecachemanager')->getCache('hook');
-            $classes = $cache->get($this->cacheKey, function (ItemInterface $item) {
-                return $this->findClasses();
-            });
-        } else {
+        if (! $this->app->configurationIsCached()) {
             $classes = $this->findClasses();
+            $this->app['config']->set('hook.classes', $classes);
         }
 
-        foreach ($classes as $class) {
+        foreach ($this->app['config']->get('hook.classes') as $class) {
             if (class_exists($class) && method_exists($class, 'hookClass')) {
                 try {
                     $this->app->make($class)->hookClass();
@@ -37,6 +30,10 @@ class ServiceProvider extends IlluminateServiceProvider
                 }
             }
         }
+
+        $this->commands([
+            HookMakeCommand::class
+        ]);
     }
 
     private function findClasses(): array

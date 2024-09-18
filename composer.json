@@ -19,10 +19,10 @@
         }
     },
     "require": {
-        "php": "^8.0",
-        "illuminate/container": "^9|^10",
-        "illuminate/support": "^9|^10",
-        "symfony/finder": "^v6"
+        "php": "^8.2",
+        "illuminate/container": "^11.23",
+        "illuminate/support": "^11.23",
+        "symfony/finder": "^v7"
     },
     "require-dev": {
         "brain/monkey": "^2.6",
@@ -50,7 +50,7 @@
     "extra": {
         "morningmedley": {
             "providers": [
-                "MorningMedley\\Hook\\ServiceProvider"
+                "MorningMedley\\Hook\\HookServiceProvider"
             ]
         }
     }

@@ -1,0 +1,11 @@
+<?php
+
+namespace {{ hooknamespace }};
+
+use MorningMedley\Hook\Classes\Action;
+use MorningMedley\Hook\Classes\Filter;
+use MorningMedley\Hook\Traits\Hookable;
+
+class {{ classname }}{
+    use Hookable;
+}
