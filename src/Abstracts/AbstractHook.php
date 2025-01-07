@@ -15,12 +15,17 @@ abstract class AbstractHook
     protected string $hook;
 
     /**
-     * @param  string|array  $hook  or hooks to apply to
+     * @param  string|object  $hook  or hooks to apply to
      *
      * @param $callback
      */
-    public function __construct(string $hook, int $priority = 10)
+    public function __construct(string|object $hook, int $priority = 10)
     {
+        // Intended here for allowing StringBacked Enums
+        if (is_object($hook) && is_string($hook?->value)) {
+            $hook = $hook->value;
+        }
+
         $this->hook = $hook;
         $this->priority = $priority;
     }
