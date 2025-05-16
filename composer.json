@@ -15,7 +15,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "MorningMedley\\Hook\\": "src/"
+            "MorningMedley\\Hook\\": "src/",
+            "MorningMedley\\Facades\\": "facades/"
         }
     },
     "require": {
