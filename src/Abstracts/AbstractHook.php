@@ -3,12 +3,13 @@
 namespace MorningMedley\Hook\Abstracts;
 
 use MorningMedley\Hook\Classes\CallbackManager;
+use MorningMedley\Hook\Contracts\Hook;
 use PHPUnit\TextUI\ReflectionException;
 
 /**
  *
  */
-abstract class AbstractHook
+abstract class AbstractHook implements Hook
 {
 
     protected int $priority = 10;
@@ -32,8 +33,6 @@ abstract class AbstractHook
 
     /**
      * Add/register the hook into WordPress
-     *
-     * @return mixed
      */
-    abstract public function register(callable $callback, int $numArgs = 1);
+    abstract public function register(callable $callback, int $numArgs = 1): void;
 }

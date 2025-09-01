@@ -55,14 +55,17 @@ class HookCacheCommand extends Command
      */
     public function handle()
     {
+        // Clear existing hook file
         $this->callSilent('hook:clear');
 
-        $hooks = $this->laravel->make(Hook::class)->hooks();
+        $this->laravel->forgetInstance(\MorningMedley\Hook\Hook::class);
+        $hook = $this->laravel->make(\MorningMedley\Hook\Hook::class);
+        $hook->locate();
 
         $configPath = $this->getCachedConfigPath();
 
         $success = $this->files->put(
-            $configPath, '<?php return ' . var_export($hooks, true) . ';' . PHP_EOL
+            $configPath, '<?php return ' . var_export($hook->hooks(), true) . ';' . PHP_EOL
         );
 
         if ($success === false) {

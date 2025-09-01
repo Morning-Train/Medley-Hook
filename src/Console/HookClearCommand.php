@@ -50,13 +50,8 @@ class HookClearCommand extends Command
      */
     public function handle()
     {
-        $this->files->delete($this->getCachedConfigPath());
+        $this->files->delete(\MorningMedley\Facades\Hook::getCachePath());
 
         $this->components->info('Configuration cache cleared successfully.');
-    }
-
-    public function getCachedConfigPath()
-    {
-        return $this->laravel->bootstrapPath('cache/hook.php');
     }
 }

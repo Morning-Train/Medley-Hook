@@ -3,11 +3,9 @@
 namespace MorningMedley\Hook;
 
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use MorningMedley\Hook\Classes\HookLocator;
 use MorningMedley\Hook\Console\HookCacheCommand;
 use MorningMedley\Hook\Console\HookClearCommand;
 use MorningMedley\Hook\Console\HookMakeCommand;
-use Symfony\Component\Finder\Finder;
 use \MorningMedley\Facades\Hook as HookFacade;
 
 class HookServiceProvider extends IlluminateServiceProvider
@@ -18,6 +16,7 @@ class HookServiceProvider extends IlluminateServiceProvider
 
         HookFacade::setFacadeApplication($this->app);
         $this->app->singleton(Hook::class);
+
         $this->app->make(Hook::class)->locate();
     }
 
@@ -30,7 +29,8 @@ class HookServiceProvider extends IlluminateServiceProvider
             );
         }
 
-        $this->app->make(Hook::class)->boot();
+        $this->app->make(Hook::class)
+            ->loadHooks();
 
         $this->commands([
             HookMakeCommand::class,
