@@ -3,6 +3,7 @@
 namespace MorningMedley\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use MorningMedley\Hook\Classes\HookCollection;
 
 /**
  * @method static void register(string $namespace, string $path)
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array hooks()
  * @method static void loadHooks()
  * @method static string getCachePath()
+ * @method static HookCollection hookCollection()
  */
 class Hook extends Facade
 {

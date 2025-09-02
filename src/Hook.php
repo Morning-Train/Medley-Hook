@@ -4,17 +4,23 @@ namespace MorningMedley\Hook;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
+use MorningMedley\Hook\Classes\HookCollection;
 use MorningMedley\Hook\Classes\HookLocator;
 use Symfony\Component\Finder\Finder;
 
 class Hook
 {
-    protected array $hooks = [];
     protected array $paths = [];
+    protected HookCollection $hookCollection;
 
     public function __construct(protected Application $app)
     {
+        $this->hookCollection = $this->app->make(HookCollection::class);
+    }
 
+    public function boot(): void
+    {
+        $this->hookCollection->load();
     }
 
     /**
@@ -26,16 +32,13 @@ class Hook
     public function locate(): void
     {
         if ($this->hooksAreCached()) {
-            $this->hooks = require $this->getCachePath();
+            $this->hookCollection->add(require $this->getCachePath());
         } else {
             $paths = $this->app->make('config')->get('hook.paths');
             foreach ([...$paths, ...$this->paths] as $hookPath) {
                 [$namespace, $path] = $hookPath;
                 $locator = $this->app->make(HookLocator::class);
-                $this->hooks = [
-                    ...$this->hooks,
-                    ...$locator->locate($path, $namespace, $this->app->make(Finder::class)),
-                ];
+                $this->hookCollection->add($locator->locate($path, $namespace, $this->app->make(Finder::class)));
             }
         }
     }
@@ -61,26 +64,17 @@ class Hook
      */
     public function hooks(): array
     {
-        return $this->hooks;
+        return $this->hookCollection->hooks();
     }
 
     /**
-     * Load all registered and found hook classes
-     * This method constructs all the classes and tries to call `hookClass()` on them
+     * Access the current HookCollection
      *
-     * @return void
+     * @return HookCollection
      */
-    public function loadHooks(): void
+    public function hookCollection(): HookCollection
     {
-        foreach ($this->hooks() as $class) {
-            if (class_exists($class) && method_exists($class, 'hookClass')) {
-                try {
-                    $this->app->make($class)->hookClass();
-                } catch (\Throwable $e) {
-
-                }
-            }
-        }
+        return $this->hookCollection;
     }
 
     /**

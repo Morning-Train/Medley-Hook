@@ -30,7 +30,7 @@ class HookServiceProvider extends IlluminateServiceProvider
         }
 
         $this->app->make(Hook::class)
-            ->loadHooks();
+            ->boot();
 
         $this->commands([
             HookMakeCommand::class,
