@@ -62,7 +62,7 @@ class HookCacheCommand extends Command
         $hook = $this->laravel->make(\MorningMedley\Hook\Hook::class);
         $hook->locate();
 
-        $configPath = $this->getCachedConfigPath();
+        $configPath = $hook->getCachePath();
 
         $success = $this->files->put(
             $configPath, '<?php return ' . var_export($hook->hooks(), true) . ';' . PHP_EOL
@@ -74,10 +74,4 @@ class HookCacheCommand extends Command
 
         $this->components->info('Hooks cached successfully.');
     }
-
-    public function getCachedConfigPath()
-    {
-        return $this->laravel->bootstrapPath('cache/hook.php');
-    }
-
 }

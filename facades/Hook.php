@@ -15,7 +15,7 @@ use MorningMedley\Hook\Classes\HookCollection;
  */
 class Hook extends Facade
 {
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
         return \MorningMedley\Hook\Hook::class;
     }
