@@ -92,7 +92,7 @@ class Hook
      *
      * @return bool
      */
-    protected function hooksAreCached(): bool
+    public function hooksAreCached(): bool
     {
         return file_exists($this->getCachePath());
     }

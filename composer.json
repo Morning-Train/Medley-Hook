@@ -21,7 +21,7 @@
     },
     "require": {
         "php": "^8.2",
-        "morningmedley/application": "^0.3"
+        "morningmedley/application": "^0.4"
     },
     "extra": {
         "morningmedley": {
