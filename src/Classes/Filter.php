@@ -13,7 +13,7 @@ use Attribute;
 class Filter extends \MorningMedley\Hook\Abstracts\AbstractHook
 {
 
-    public function register(callable $callback, int $numArgs = 1)
+    public function register(callable $callback, int $numArgs = 1): void
     {
         \add_filter($this->hook, $callback, $this->priority, $numArgs);
     }

@@ -2,7 +2,7 @@
 
 namespace MorningMedley\Hook\Traits;
 
-use MorningMedley\Hook\Abstracts\AbstractHook;
+use MorningMedley\Hook\Contracts\Hook as HookContract;
 use Reflector;
 
 trait Hookable
@@ -12,7 +12,7 @@ trait Hookable
      *
      * @return void
      */
-    public function hookClass()
+    public function hookClass(): void
     {
         foreach ($this->getHookableTargets() as $hookableReflection) {
             $attributes = $hookableReflection->getAttributes();
@@ -21,7 +21,7 @@ trait Hookable
             }
 
             $instances = array_map(fn($a) => $a->newInstance(), $attributes);
-            $hooks = array_filter($instances, fn($i) => is_a($i, AbstractHook::class));
+            $hooks = array_filter($instances, fn($i) => is_a($i, HookContract::class));
 
             foreach ($hooks as $hook) {
                 $this->registerHook($hook, $hookableReflection);
@@ -42,12 +42,12 @@ trait Hookable
     /**
      * Register a Hook by its reflector
      *
-     * @param  AbstractHook  $hook
+     * @param  HookContract  $hook
      * @param  Reflector  $reflection
      *
      * @return void
      */
-    protected function registerHook(AbstractHook $hook, Reflector $reflection)
+    protected function registerHook(HookContract $hook, Reflector $reflection): void
     {
         switch (true) {
             case is_a($reflection, \ReflectionMethod::class):
