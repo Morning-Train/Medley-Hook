@@ -5,7 +5,7 @@ namespace MorningMedley\Hook\Console;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
 use Illuminate\Filesystem\Filesystem;
-use MorningMedley\Hook\Hook;
+use MorningMedley\Facades\Hook;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Throwable;
 
@@ -58,14 +58,12 @@ class HookCacheCommand extends Command
         // Clear existing hook file
         $this->callSilent('hook:clear');
 
-        $this->laravel->forgetInstance(\MorningMedley\Hook\Hook::class);
-        $hook = $this->laravel->make(\MorningMedley\Hook\Hook::class);
-        $hook->locate();
+        $hooks = $this->getFreshList();
 
-        $configPath = $hook->getCachePath();
+        $configPath = Hook::getCachePath();
 
         $success = $this->files->put(
-            $configPath, '<?php return ' . var_export($hook->hooks(), true) . ';' . PHP_EOL
+            $configPath, '<?php return ' . var_export($hooks, true) . ';' . PHP_EOL
         );
 
         if ($success === false) {
@@ -73,5 +71,22 @@ class HookCacheCommand extends Command
         }
 
         $this->components->info('Hooks cached successfully.');
+    }
+
+    /**
+     * Boot a fresh copy of the hook list
+     *
+     * @return array
+     */
+    protected function getFreshList()
+    {
+        ray("getFreshList");
+        $app = require $this->laravel->bootstrapPath('app.php');
+
+        $app->useStoragePath($this->laravel->storagePath());
+        $app->make(ConsoleKernelContract::class)->bootstrap();
+        ray(Hook::hooks());
+
+        return Hook::hooks();
     }
 }

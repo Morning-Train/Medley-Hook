@@ -18,7 +18,7 @@ class Hook
         $this->hookCollection = $this->app->make(HookCollection::class);
     }
 
-    public function boot(): void
+    public function load(): void
     {
         $this->hookCollection->load();
     }
@@ -64,6 +64,7 @@ class Hook
      */
     public function hooks(): array
     {
+        ray("hooks:",$this->hookCollection);
         return $this->hookCollection->hooks();
     }
 

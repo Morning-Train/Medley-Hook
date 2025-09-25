@@ -11,6 +11,8 @@ class HookCollection
      */
     private array $hooks = [];
 
+    private bool $loaded = false;
+
     public function __construct(protected Application $app)
     {
 
@@ -24,6 +26,10 @@ class HookCollection
      */
     public function add(string|array $classes): void
     {
+        if ($this->loaded) {
+            $this->loadClasses((array) $classes);
+        }
+
         $this->hooks = [...$this->hooks, ...(array) $classes];
     }
 
@@ -38,23 +44,26 @@ class HookCollection
     }
 
     /**
-     * Empty the current Hook list
-     *
-     * @return void
-     */
-    public function clear(): void
-    {
-        $this->hooks = [];
-    }
-
-    /**
      * Load and clear Hooks
      *
-     * @return void
+     * @return bool
      */
-    public function load(): void
+    public function load(): bool
     {
-        foreach ($this->hooks() as $class) {
+        if ($this->loaded) {
+            return false;
+        }
+
+        $this->loadClasses($this->hooks());
+
+        $this->loaded = true;
+
+        return true;
+    }
+
+    public function loadClasses(array $classes): void
+    {
+        foreach ($classes as $class) {
             if (class_exists($class) && method_exists($class, 'hookClass')) {
                 try {
                     $this->app->make($class)->hookClass();
@@ -63,6 +72,5 @@ class HookCollection
                 }
             }
         }
-        $this->clear();
     }
 }

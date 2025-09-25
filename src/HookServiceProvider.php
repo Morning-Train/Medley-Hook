@@ -16,8 +16,6 @@ class HookServiceProvider extends IlluminateServiceProvider
 
         HookFacade::setFacadeApplication($this->app);
         $this->app->singleton(Hook::class);
-
-        $this->app->make(Hook::class)->locate();
     }
 
     public function boot(): void
@@ -29,13 +27,14 @@ class HookServiceProvider extends IlluminateServiceProvider
             );
         }
 
-        $this->app->make(Hook::class)
-            ->boot();
+        HookFacade::locate();
+        HookFacade::load();
 
         $this->commands([
             HookMakeCommand::class,
             HookCacheCommand::class,
             HookClearCommand::class,
         ]);
+
     }
 }

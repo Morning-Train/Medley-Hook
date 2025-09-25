@@ -13,6 +13,7 @@ use MorningMedley\Hook\Classes\HookCollection;
  * @method static HookCollection hookCollection()                   // Get collection instance
  * @method static string getCachePath()                             // Get path to cache file
  * @method static bool hooksAreCached()                             // Cache file exists
+ * @method static void load()                                       // Load all hook classes
  */
 class Hook extends Facade
 {
