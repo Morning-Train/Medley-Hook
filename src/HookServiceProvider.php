@@ -20,6 +20,8 @@ class HookServiceProvider extends IlluminateServiceProvider
 
     public function boot(): void
     {
+        $this->app->booted($this->bootHookClass(...));
+
         if ($this->app->runningInConsole()) {
             $this->optimizes(
                 optimize: 'hook:cache',
@@ -27,14 +29,16 @@ class HookServiceProvider extends IlluminateServiceProvider
             );
         }
 
-        HookFacade::locate();
-        HookFacade::load();
-
         $this->commands([
             HookMakeCommand::class,
             HookCacheCommand::class,
             HookClearCommand::class,
         ]);
+    }
 
+    public function bootHookClass(): void
+    {
+        HookFacade::locate();
+        HookFacade::load();
     }
 }
