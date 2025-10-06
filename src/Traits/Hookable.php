@@ -7,6 +7,8 @@ use Reflector;
 
 trait Hookable
 {
+    protected bool $isHooked = false;
+
     /**
      * Setup hooks for a class
      *
@@ -14,6 +16,10 @@ trait Hookable
      */
     public function hookClass(): void
     {
+        if ($this->isHooked) {
+            return;
+        }
+
         foreach ($this->getHookableTargets() as $hookableReflection) {
             $attributes = $hookableReflection->getAttributes();
             if (empty($attributes)) {
@@ -27,6 +33,8 @@ trait Hookable
                 $this->registerHook($hook, $hookableReflection);
             }
         }
+
+        $this->isHooked = true;
     }
 
     /**
