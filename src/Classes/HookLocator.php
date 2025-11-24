@@ -4,6 +4,7 @@ namespace MorningMedley\Hook\Classes;
 
 use Illuminate\Container\Container;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class HookLocator
 {
@@ -14,6 +15,13 @@ class HookLocator
         $this->app = $app;
     }
 
+    /**
+     * @param  string  $path
+     * @param  string  $namespace
+     * @param  Finder  $finder
+     *
+     * @return string[]
+     */
     public function locate(string $path, string $namespace, Finder $finder): array
     {
         if (! is_dir($path)) {
@@ -26,36 +34,53 @@ class HookLocator
         return $classes;
     }
 
+    /**
+     * @param  string  $path
+     * @param  Finder  $finder
+     *
+     * @return SplFileInfo[]
+     */
     public function files(string $path, Finder $finder): array
     {
         $files = [];
         $finder->in($path)->name('*.php')->notName('index.php')->files();
+
         foreach ($finder as $file) {
-            $files[$file->getFilenameWithoutExtension()] = $file->getRelativePath();
+            $files[] = $file;
         }
 
         return $files;
     }
 
-    public function guessClassNames(array $files, string $namespace)
+    /**
+     * @param  SplFileInfo[]  $files
+     * @param  string  $namespace
+     * @return string[]
+     */
+    public function guessClassNames(array $files, string $namespace): array
     {
         $classes = [];
-        foreach ($files as $name => $path) {
-            $classes[] = $this->guessClassName($path, $name, $namespace);
+        foreach ($files as $file) {
+            $classes[] = $this->guessClassName($file, $namespace);
         }
 
         return $classes;
     }
 
+    /**
+     * @param  SplFileInfo  $file
+     * @param  string  $namespace
+     *
+     * @return string
+     */
     public function guessClassName(
-        string $relativePath,
-        string $filenameWithoutExtension,
+        SplFileInfo $file,
         string $namespace
     ): string {
         return implode('\\', array_filter([
             rtrim($namespace, '\\'),
-            str_replace("/", "\\", $relativePath),
-            $filenameWithoutExtension,
+            str_replace("/", "\\", $file->getRelativePath()),
+            $file->getFilenameWithoutExtension(),
         ]));
     }
 }
