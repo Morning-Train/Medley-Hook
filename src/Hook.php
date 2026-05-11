@@ -64,7 +64,6 @@ class Hook
      */
     public function hooks(): array
     {
-        ray("hooks:",$this->hookCollection);
         return $this->hookCollection->hooks();
     }
 

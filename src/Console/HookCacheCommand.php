@@ -80,12 +80,10 @@ class HookCacheCommand extends Command
      */
     protected function getFreshList()
     {
-        ray("getFreshList");
         $app = require $this->laravel->bootstrapPath('app.php');
 
         $app->useStoragePath($this->laravel->storagePath());
         $app->make(ConsoleKernelContract::class)->bootstrap();
-        ray(Hook::hooks());
 
         return Hook::hooks();
     }
