@@ -1,10 +1,8 @@
-# Morningmedley Hook
+# Hook
 
-A system for organizing WordPress hooks.
+A utility for organizing WordPress hooks.
 
-This framework is currently in beta and full documentation is coming shortly.
+## Resources
 
-Expected 1.0.0 release mid to late 2024.
-
-## Installation
-`composer install morningmedley/medley`
+- [Documentation](https://morningmedley.dev/docs/modules/hook/)
+- [Contributing](https://morningmedley.dev/docs/contributing/)
